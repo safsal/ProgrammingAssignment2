@@ -1,15 +1,36 @@
-## Put comments here that give an overall description of what your
-## functions do
+## this is my solution to the matrix inversion caching task.
+## makeCacheMatrix() makes a list setters and getters for matrix inversion.
+## cacheSolve() uses makeCacheMatrix() output list and activating solve()
+## on the matrix only if the matrix solution is not already cached.
 
-## Write a short comment describing this function
-
+## makeCacheMatrix() makes a list setters and getters for matrix inversion.
+## gets a matrix.
 makeCacheMatrix <- function(x = matrix()) {
-
+  inv <- NULL
+  set <- function(y) {
+    x <<- y
+    inv <<- NULL
+  }
+  get <- function() x
+  setmean <- function(inverse) inv <<- inverse
+  getmean <- function() inv
+  list(set = set, get = get,
+       setmean = setmean,
+       getmean = getmean)
 }
 
 
-## Write a short comment describing this function
-
+## cacheSolve() uses makeCacheMatrix() output list and activating solve()
+## on the matrix only if the matrix solution is not already cached.
+## gets makeCacheMatrix() output list.
 cacheSolve <- function(x, ...) {
-        ## Return a matrix that is the inverse of 'x'
+  inv <- x$getmean()
+  if(!is.null(inv)) {
+    message("getting cached data")
+    return(inv)
+  }
+  data <- x$get()
+  inv <- solve(data, ...)
+  x$setmean(inv)
+  inv
 }
